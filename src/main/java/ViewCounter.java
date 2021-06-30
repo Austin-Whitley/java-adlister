@@ -18,10 +18,7 @@ public class ViewCounter extends HttpServlet{
 
         if(req.getParameter("reset") != null){
             count = 1;
-            out.println("<h1>" + count + "</h1>");
-        }else{
-            out.println("<h1>" + count + "</h1>");
         }
-
+        out.println("<h1>" + count + "</h1>");
     }
 }
