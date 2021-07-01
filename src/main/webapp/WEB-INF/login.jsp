@@ -20,7 +20,7 @@
     <title>Login page</title>
 </head>
 <body>
-    <form action="/login.jsp" method="POST">
+    <form action="/WEB-INF/login.jsp" method="POST">
         <label for="username">Username</label>
         <input type="text" id="username" name="userName" placeholder="John Smith">
         <label for="password">Password</label>
@@ -32,7 +32,7 @@
     </form>
 
 <c:if test="<%=adminCheck%>">
-    <%response.sendRedirect("/profile.jsp");%>
+    <%response.sendRedirect("/WEB-INF/profile.jsp");%>
 </c:if>
 
 </body>

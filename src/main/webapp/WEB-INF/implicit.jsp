@@ -6,7 +6,7 @@
     Random rand = new Random();
     int randNum = rand.nextInt((7-1) + 1) + 1;
     if(randNum == 1){
-        response.sendRedirect("/hello");
+        response.sendRedirect("/hello-world");
     }else if(randNum == 7){
         response.sendError(500);
     }
