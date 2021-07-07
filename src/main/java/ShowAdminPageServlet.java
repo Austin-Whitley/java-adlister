@@ -1,0 +1,22 @@
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+@WebServlet(name = "ShowAdminPageServlet", urlPatterns = "/secret-admin-page")
+public class ShowAdminPageServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //create a new session
+        HttpSession session = request.getSession();
+        //session is what stores the cookies then sends them to the server
+
+        if((boolean)session.getAttribute("isAdmin") == false){
+            response.sendRedirect("/login.jsp");
+            return;
+        }
+        request.getRequestDispatcher("/secret-admin-page.jsp").forward(request, response);
+    }
+}
