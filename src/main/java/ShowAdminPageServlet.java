@@ -14,9 +14,9 @@ public class ShowAdminPageServlet extends HttpServlet {
         //session is what stores the cookies then sends them to the server
 
         if((boolean)session.getAttribute("isAdmin") == false){
-            response.sendRedirect("/login.jsp");
+            response.sendRedirect("/login");
             return;
         }
-        request.getRequestDispatcher("/secret-admin-page.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/secret-admin-page.jsp").forward(request, response);
     }
 }

@@ -11,9 +11,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Checking if the person has ever logged in if not they take them to the login page
         if(request.getSession().getAttribute("isAdmin") != null) {
-            response.sendRedirect("/secret-admin-page.jsp");
+            response.sendRedirect("/WEB-INF/secret-admin-page.jsp");
         }
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -30,8 +30,6 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/login");
         }
 
-
-
 //       //////////////////////////////////////
 //        // set the session object to a variable based on the HttpSession class
 //        HttpSession session = request.getSession();
@@ -42,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 //
 //        // on a different servlet (profile)
 //        //with the get attribute method the return is always a generic object type
-//        // explicitly cast tot he correct type
+//        // explicitly cast to  "the correct type
 //        session.getAttribute("darkMode");
 //        String darkSelected = (String) session.getAttribute("darkMode");
 //
@@ -56,8 +54,8 @@ public class LoginServlet extends HttpServlet {
 //        // session resides in the session only ends in the server
 //
 //        // cookie is being tracked in the browser and are sent and saved in each session
-//
-//
+
+
     }
 
 }
