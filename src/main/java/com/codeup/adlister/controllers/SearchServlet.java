@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/search")
-
 public class SearchServlet extends HttpServlet {
     //this will search, take in all of the results inside our ads db to search through every title
 

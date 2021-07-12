@@ -18,6 +18,9 @@ public class CreateAdServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //login servlet
+        //create a user variable set that equal to daofactory.getuser dao use find by user
+        //once the dao factory is stored in a testUser
         Ad ad = new Ad(
             1, // for now we'll hardcode the user id
             request.getParameter("title"),

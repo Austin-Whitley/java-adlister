@@ -1,3 +1,5 @@
+USE adlister_db;
+
 INSERT INTO users (username, email, password)
 VALUES ('bob-o', 'bobby@email.com', 'password'),
        ('sally-smith', 'sally@email.com', 'password');
