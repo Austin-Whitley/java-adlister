@@ -3,6 +3,7 @@ package com.codeup.adlister.dao;
 import com.codeup.adlister.models.Ad;
 import com.mysql.cj.jdbc.Driver;
 
+import javax.swing.plaf.nimbus.State;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,9 +41,16 @@ public class MySQLAdsDao implements Ads {
 
     @Override
     public Long insert(Ad ad) {
+
+        String sql = "INSERT INTO ads(user_id, title, description) VALUES(?, ?, ?);";
         try {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(createInsertQuery(ad), Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            //Set the ? parameters inside our sql String
+            stmt.setLong(1, ad.getUserId());
+            stmt.setString(2, ad.getTitle());
+            stmt.setString(3, ad.getDescription());
+
+            stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
             return rs.getLong(1);
@@ -73,5 +81,21 @@ public class MySQLAdsDao implements Ads {
             ads.add(extractAd(rs));
         }
         return ads;
+    }
+
+    //search method
+    @Override
+    public List<Ad> searchByTitle(String query) {
+        String searchSql = "SELECT * FROM ads WHERE title LIKE ?;";
+        String searchTermWithWildCards = "%" + query + "%";
+        PreparedStatement stmt = null;
+        try {
+            stmt = connection.prepareStatement(searchSql);
+            stmt.setString(1, searchTermWithWildCards); //parameterIndex is calling the '?' in our statement
+            ResultSet rs = stmt.executeQuery();
+            return createAdsFromResults(rs);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error searching for ads.", e);
+        }
     }
 }
