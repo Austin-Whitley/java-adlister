@@ -13,6 +13,8 @@
         <input id="email" name="email" type="email">
         <label for="password">Password</label>
         <input id="password" name="password" type="password">
+        <label for="confirm_password">Confirm Password</label>
+        <input id="confirm_password" name="confirm_password" type="password">
         <input type="submit">
     </form>
 </body>

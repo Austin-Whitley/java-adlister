@@ -43,18 +43,20 @@ public class MySQLUsersDao implements Users{
 
     //search for a user by their name
     @Override
-    public List<User> findByUsername(String username) {
+    public User findByUsername(String username) {
+        List<User> users = new ArrayList<>();
         String searchSql = "SELECT * FROM users WHERE username LIKE ?;";
-        String searchTermWithWildCards = "%" + username + "%";
-        PreparedStatement stmt = null;
         try {
-            stmt = connection.prepareStatement(searchSql);
-            stmt.setString(1, searchTermWithWildCards); //parameterIndex is calling the '?' in our statement
+            PreparedStatement stmt = connection.prepareStatement(searchSql);
+            stmt.setString(1, username); //parameterIndex is calling the '?' in our statement
             ResultSet rs = stmt.executeQuery();
-            return createUsersFromResults(rs);
+            while (rs.next()) {
+                users.add(extractUser(rs));
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Error searching for users.", e);
         }
+        return users.get(0);
     }
 
     //Insert a new user into the database
@@ -69,6 +71,7 @@ public class MySQLUsersDao implements Users{
             stmt.setString(3, user.getPassword());
 
             stmt.executeUpdate();
+
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
             return rs.getLong(1);

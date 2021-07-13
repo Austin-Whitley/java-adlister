@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(name = "controllers.RegisterServlet", urlPatterns = "/register")
@@ -18,18 +19,35 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // TODO: ensure the submitted information is valid
-        if(request.getParameter("username") == null || request.getParameter("email") == null || request.getParameter("password") == null){
-            response.sendRedirect("/login");
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirm_password");
+
+        boolean noEmpties = !username.isEmpty() && !password.isEmpty() && !email.isEmpty();
+        boolean passwordMatch = password.equals(confirmPassword);
+        boolean actuallyAnEmail = email.contains("@");
+        boolean userNotExists;
+        try{
+            DaoFactory.getUserDao().findByUsername(username);
+            userNotExists = false;
+        }catch(Exception e){
+            userNotExists = true;
+        }
+
+        if(noEmpties && passwordMatch && actuallyAnEmail && userNotExists){
+            User userToInsert = new User(username, email, password);
+            DaoFactory.getUserDao().insert(userToInsert);
+            userToInsert = DaoFactory.getUserDao().findByUsername(userToInsert.getUsername());
+            HttpSession session = request.getSession();
+            session.setAttribute("user", userToInsert);
+            response.sendRedirect("/profile");
+        }else{
+            response.sendRedirect("/register");
         }
         // TODO: create a new user based off of the submitted information
-        User userToInsert = new User(
-                request.getParameter("username"),
-                request.getParameter("email"),
-                request.getParameter("password")
 
-        );
         // TODO: if a user was successfully created, send them to their profile
-        DaoFactory.getUserDao().insert(userToInsert);
-        response.sendRedirect("/profile");
+
     }
 }
